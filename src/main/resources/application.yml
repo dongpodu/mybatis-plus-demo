@@ -4,3 +4,9 @@ spring:
     url: jdbc:mysql://172.16.33.205:3306/pgc_task?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&zeroDateTimeBehavior=convertToNull
     username: bangumi
     password: SbBR5yRCYuMdYyor
+
+
+mybatis-plus:
+# 如果是放在src/main/java目录下 classpath:/com/*/*/mapper/*Mapper.xml
+# 如果是放在resource目录 classpath:/mapper/**.xml
+  mapper-locations: classpath*:/com/bili/mybatisplusdemo/mapper/*Mapper.xml

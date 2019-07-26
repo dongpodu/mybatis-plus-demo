@@ -14,7 +14,7 @@
         id, no, name
     </sql>
 
-    <insert id="insertWithXml">
+    <insert id="insertWithXml" parameterType="com.bili.mybatisplusdemo.entity.Student">
         insert into t_student(no,name)
         values(#{no},#{name})
     </insert>
