@@ -65,6 +65,9 @@ public class StudentMapperTest extends BaseTest {
     }
 
 
+    /**
+     * 10w数据耗时494492ms
+     */
     @Test
     public void testPerformance(){
         StopWatch stopWatch = new StopWatch();
@@ -79,6 +82,9 @@ public class StudentMapperTest extends BaseTest {
         System.out.println(stopWatch.prettyPrint());
     }
 
+    /**
+     * 10w数据耗时477443ms
+     */
     @Test
     public void testPerformance1(){
         StopWatch stopWatch = new StopWatch();
