@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2019-07-23
  */
 public interface StudentMapper extends BaseMapper<Student> {
-
+    void insertWithXml(Student student);
 }

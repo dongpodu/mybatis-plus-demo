@@ -14,4 +14,9 @@
         id, no, name
     </sql>
 
+    <insert id="insertWithXml">
+        insert into t_student(no,name)
+        values(#{no},#{name})
+    </insert>
+
 </mapper>
