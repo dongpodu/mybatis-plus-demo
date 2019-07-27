@@ -14,4 +14,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 public interface StudentMapper extends BaseMapper<Student> {
     void insertWithXml(Student student);
+    void updateWithXml(Student student);
+    Student selectByIdWithXml(Long id);
 }

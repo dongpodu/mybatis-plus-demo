@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bili.mybatisplusdemo.entity.Student;
 import com.bili.mybatisplusdemo.mapper.StudentMapper;
+import org.assertj.core.util.Maps;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.util.StopWatch;
@@ -13,6 +14,7 @@ import org.springframework.util.StopWatch;
 import javax.annotation.Resource;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 /**
  * willdu 2019-07-23
@@ -27,6 +29,14 @@ public class StudentMapperTest extends BaseTest {
         insert.setName("张三");
         insert.setNo(10001);
         studentMapper.insert(insert);
+    }
+
+    @Test
+    public void testDelete(){
+        System.out.println(studentMapper.delete(new LambdaQueryWrapper<Student>().eq(Student::getId,1)));
+        System.out.println(studentMapper.deleteBatchIds(IntStream.rangeClosed(2,3).boxed().collect(Collectors.toList())));
+        System.out.println(studentMapper.deleteById(4));
+        System.out.println(studentMapper.deleteByMap(Maps.newHashMap("no",10001)));
     }
 
     @Test
@@ -65,13 +75,10 @@ public class StudentMapperTest extends BaseTest {
     }
 
 
-    /**
-     * 10w数据耗时494492ms
-     */
     @Test
-    public void testPerformance(){
+    public void testInsertPerformance(){
         StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
+        stopWatch.start("insert");
         IntStream.rangeClosed(1,100000).forEach(r ->{
             Student insert = new Student();
             insert.setName("张三"+r);
@@ -79,21 +86,58 @@ public class StudentMapperTest extends BaseTest {
             studentMapper.insert(insert);
         });
         stopWatch.stop();
-        System.out.println(stopWatch.prettyPrint());
-    }
 
-    /**
-     * 10w数据耗时477443ms
-     */
-    @Test
-    public void testPerformance1(){
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
+        studentMapper.delete(new LambdaQueryWrapper<>());
+
+        stopWatch.start("insertWithXml");
         IntStream.rangeClosed(1,100000).forEach(r ->{
             Student insert = new Student();
             insert.setName("张三"+r);
             insert.setNo(r);
             studentMapper.insertWithXml(insert);
+        });
+        stopWatch.stop();
+        System.out.println(stopWatch.prettyPrint());
+    }
+
+
+    @Test
+    public void testUpdatePerformance(){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start("update");
+        IntStream.rangeClosed(1,100000).forEach(r ->{
+            Student update = new Student();
+            update.setId(r);
+            update.setName("李四"+r);
+            update.setNo(r);
+            studentMapper.updateById(update);
+        });
+        stopWatch.stop();
+
+        stopWatch.start("updateWithXml");
+        IntStream.rangeClosed(1,100000).forEach(r ->{
+            Student update = new Student();
+            update.setId(r);
+            update.setName("王五"+r);
+            update.setNo(r);
+            studentMapper.updateWithXml(update);
+        });
+        stopWatch.stop();
+        System.out.println(stopWatch.prettyPrint());
+    }
+
+    @Test
+    public void testSelectPerformance(){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start("select");
+        IntStream.rangeClosed(1,100000).forEach(r ->{
+            Student student = studentMapper.selectById(r);
+        });
+        stopWatch.stop();
+
+        stopWatch.start("selectWithXml");
+        LongStream.rangeClosed(1,100000).forEach(r ->{
+            Student student = studentMapper.selectByIdWithXml(r);
         });
         stopWatch.stop();
         System.out.println(stopWatch.prettyPrint());
