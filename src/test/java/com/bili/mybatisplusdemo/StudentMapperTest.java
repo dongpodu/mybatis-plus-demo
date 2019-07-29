@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.springframework.util.StopWatch;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
@@ -79,7 +80,7 @@ public class StudentMapperTest extends BaseTest {
     public void testInsertPerformance(){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start("insert");
-        IntStream.rangeClosed(1,100000).forEach(r ->{
+        IntStream.rangeClosed(100001,1000000).parallel().forEach(r ->{
             Student insert = new Student();
             insert.setName("张三"+r);
             insert.setNo(r);
@@ -95,49 +96,6 @@ public class StudentMapperTest extends BaseTest {
             insert.setName("张三"+r);
             insert.setNo(r);
             studentMapper.insertWithXml(insert);
-        });
-        stopWatch.stop();
-        System.out.println(stopWatch.prettyPrint());
-    }
-
-
-    @Test
-    public void testUpdatePerformance(){
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start("update");
-        IntStream.rangeClosed(1,100000).forEach(r ->{
-            Student update = new Student();
-            update.setId(r);
-            update.setName("李四"+r);
-            update.setNo(r);
-            studentMapper.updateById(update);
-        });
-        stopWatch.stop();
-
-        stopWatch.start("updateWithXml");
-        IntStream.rangeClosed(1,100000).forEach(r ->{
-            Student update = new Student();
-            update.setId(r);
-            update.setName("王五"+r);
-            update.setNo(r);
-            studentMapper.updateWithXml(update);
-        });
-        stopWatch.stop();
-        System.out.println(stopWatch.prettyPrint());
-    }
-
-    @Test
-    public void testSelectPerformance(){
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start("select");
-        IntStream.rangeClosed(1,100000).forEach(r ->{
-            Student student = studentMapper.selectById(r);
-        });
-        stopWatch.stop();
-
-        stopWatch.start("selectWithXml");
-        LongStream.rangeClosed(1,100000).forEach(r ->{
-            Student student = studentMapper.selectByIdWithXml(r);
         });
         stopWatch.stop();
         System.out.println(stopWatch.prettyPrint());

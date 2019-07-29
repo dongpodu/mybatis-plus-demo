@@ -34,4 +34,9 @@
         where id=#{id}
     </select>
 
+    <select id="selectIdListWithXml" resultType="java.lang.Integer">
+        select id
+        from t_student
+    </select>
+
 </mapper>
